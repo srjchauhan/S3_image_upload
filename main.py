@@ -1,14 +1,12 @@
 import pprint
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sys
 import uvicorn
 from engine import download_image, s3_client
-
-sys.path.append("..")
 import os
 from pydantic import BaseModel
+from config import PathConfig
 
 
 class Item(BaseModel):
@@ -43,6 +41,11 @@ def upload(request: Item):
         status, file_name = download_image(url=url, name=name)
         if status:
             s3 = s3_client()
+            if s3.check_file_exist(filename=file_name):
+                response['status'] = 'Error '
+                response['error'] = f'FILE EXIst: File with name {name} already exist in bucket'
+                os.remove(os.path.join(PathConfig.temp_path, file_name))
+                return response
             upload_status, resp = s3.upload_image(name=file_name)
             if upload_status:
 
@@ -51,7 +54,7 @@ def upload(request: Item):
             else:
                 response['status'] = 'Error '
                 response['error'] = 'Unable to upload image to s3' + resp
-
+            os.remove(os.path.join(PathConfig.temp_path, file_name))
         else:
             response['status'] = 'Error'
             response['error'] = 'Unable to download image' + file_name

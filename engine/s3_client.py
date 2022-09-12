@@ -12,6 +12,14 @@ class s3_client:
                                    aws_secret_access_key=S3Config.aws_secret_access_key,
                                    region_name=S3Config.region_name)
 
+    def check_file_exist(self, filename):
+        resp = self.client.list_objects_v2(Bucket=S3Config.bucket_name,
+                                           Prefix=os.path.join(S3Config.bucket_dir, filename))
+        if resp['KeyCount'] > 0:
+            return True
+        else:
+            return False
+
     def upload_image(self, name):
         local_image_path = os.path.join(self._temp_path, name)
         tmp_objectName = os.path.join(S3Config.bucket_dir, name) if len(S3Config.bucket_dir) > 0 else os.path.basename(
