@@ -10,4 +10,4 @@ class S3Config:
 
 
 class PathConfig:
-    temp_path = '/media/suraj/894646d5-9bab-49b8-9d9e-f81da31046b6/other/image_dl_s3/.sys-cache'
+    temp_path = os.environ.get('TEMP_DIR')
