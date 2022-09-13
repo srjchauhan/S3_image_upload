@@ -38,6 +38,7 @@ def upload(request: Item):
     }
     try:
         url, name = request.image_url, request.image_name
+        url = url.split('?')[0]
         status, file_name = download_image(url=url, name=name)
         if status:
             s3 = s3_client()
