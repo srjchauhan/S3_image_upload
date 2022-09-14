@@ -8,6 +8,8 @@ from config import PathConfig
 
 def download_image(url, name):
     temp_path = PathConfig.temp_path
+    if not os.path.isdir(temp_path):
+        os.makedirs(temp_path)
     ext = os.path.splitext(url)[-1]
     file_path = os.path.join(temp_path, name + ext)
     r = requests.get(url, stream=True)
