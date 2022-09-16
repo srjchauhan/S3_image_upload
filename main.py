@@ -7,6 +7,7 @@ from engine import download_image, s3_client
 import os
 from pydantic import BaseModel
 from config import PathConfig
+from database import Dynamodb
 
 
 class Item(BaseModel):
@@ -47,11 +48,16 @@ def upload(request: Item):
                 response['error'] = f'FILE EXIst: File with name {name} already exist in bucket'
                 os.remove(os.path.join(PathConfig.temp_path, file_name))
                 return response
-            upload_status, resp = s3.upload_image(name=file_name)
+            upload_status, resp, s3_path = s3.upload_image(name=file_name)
             if upload_status:
-
-                response['status'] = 'Success'
-                response['error'] = ''
+                db = Dynamodb()
+                db_status, db_resp = db.insert(img_name=file_name, img_url=url, img_s3_path=s3_path)
+                if db_status:
+                    response['status'] = 'Success'
+                    response['error'] = ''
+                else:
+                    response['status'] = 'Error'
+                    response['error'] = 'Image saved to s3 but unable to do entry in db'
             else:
                 response['status'] = 'Error '
                 response['error'] = 'Unable to upload image to s3' + resp
