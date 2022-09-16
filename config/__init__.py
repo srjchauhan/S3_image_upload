@@ -1,1 +1,1 @@
-from .config import S3Config, PathConfig
+from .config import S3Config, PathConfig, DynamodbConfig

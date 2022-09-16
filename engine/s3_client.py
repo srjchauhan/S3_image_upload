@@ -27,8 +27,8 @@ class s3_client:
         try:
             response = self.client.upload_file(local_image_path, S3Config.bucket_name, tmp_objectName)
         except ClientError as e:
-            return False, str(e)
-        return True, response
+            return False, str(e), ''
+        return True, response, tmp_objectName
 
     def list_images(self):
         try:

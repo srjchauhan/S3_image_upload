@@ -11,3 +11,7 @@ class S3Config:
 
 class PathConfig:
     temp_path = os.environ.get('TEMP_DIR')
+
+
+class DynamodbConfig:
+    table_name = 's3_image_data'
