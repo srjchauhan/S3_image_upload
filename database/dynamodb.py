@@ -4,10 +4,12 @@ from datetime import datetime
 
 
 class Dynamodb:
-    def __init__(self):
+    def __init__(self, isLocal: bool = DynamodbConfig.islocal):
         self.db = boto3.resource('dynamodb', aws_access_key_id=S3Config.aws_access_key_id,
                                  aws_secret_access_key=S3Config.aws_secret_access_key,
                                  region_name=S3Config.region_name)
+        if isLocal:
+            self.db = boto3.resource('dynamodb', endpoint_url=DynamodbConfig.endpoint_url)
         self._table_name = DynamodbConfig.table_name
 
     def create_table(
