@@ -7,6 +7,8 @@ class S3Config:
     region_name = os.environ.get("REGION_NAME")
     bucket_name = os.environ.get("BUCKET_NAME")
     bucket_dir = os.environ.get("BUCKET_DIR")
+    isLocal = False
+    endpoint_url = ''
 
 
 class PathConfig:
@@ -15,3 +17,5 @@ class PathConfig:
 
 class DynamodbConfig:
     table_name = 's3_image_data'
+    islocal = False
+    endpoint_url = ''

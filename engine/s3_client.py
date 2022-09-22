@@ -6,11 +6,13 @@ from botocore.exceptions import ClientError
 
 
 class s3_client:
-    def __init__(self) -> None:
+    def __init__(self, islocal: bool = S3Config.isLocal) -> None:
         self._temp_path = PathConfig.temp_path
         self.client = boto3.client('s3', aws_access_key_id=S3Config.aws_access_key_id,
                                    aws_secret_access_key=S3Config.aws_secret_access_key,
                                    region_name=S3Config.region_name)
+        if islocal:
+            self.client = boto3.client('s3', endpoint_url=S3Config.endpoint_url)
 
     def check_file_exist(self, filename):
         resp = self.client.list_objects_v2(Bucket=S3Config.bucket_name,
