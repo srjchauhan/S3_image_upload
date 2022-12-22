@@ -30,12 +30,12 @@ pip install -r requirements.txt
 
 create env variable and fill in respective env value 
 ```
-AWS_ACCESS_ID = ''
-AWS_ACCESS_KEY = ''
-REGION_NAME = ''
-BUCKET_NAME = ''
-BUCKET_DIR = ''
-TEMP_DIR = '.sys-cache'
+AWS_ACCESS_ID=
+AWS_ACCESS_KEY=
+REGION_NAME=
+BUCKET_NAME=
+BUCKET_DIR =
+TEMP_DIR=.sys-cache
 ```
 ## Run app
 
